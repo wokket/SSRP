@@ -20,6 +20,11 @@ pub fn get_instance_request(instance_name: &str) -> Vec<u8> {
     buffer
 }
 
+/// This request can be sent to a server to get a set of all the instance details available on that server.
+pub const fn get_unicast_browse_request() -> [u8; 1] {
+    [2]
+}
+
 pub fn parse_server_response<'a>(data: &'a [u8]) -> ServerResponse<'a> {
     assert_eq!(data[0], SVR_RESP);
 
@@ -33,7 +38,7 @@ pub fn parse_server_response<'a>(data: &'a [u8]) -> ServerResponse<'a> {
 }
 
 pub struct ServerResponse<'a> {
-    data: &'a str,
+    pub data: &'a str,
 }
 
 mod tests {
