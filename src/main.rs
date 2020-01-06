@@ -4,7 +4,7 @@ use std::net::UdpSocket;
 
 fn main() -> std::io::Result<()> {
     {
-        let mut socket = UdpSocket::bind("127.0.0.1:34254")?;
+        let socket = UdpSocket::bind("127.0.0.1:34254")?;
 
         let dest = "127.0.0.1:1434";
         socket.connect(dest)?;
@@ -19,8 +19,6 @@ fn main() -> std::io::Result<()> {
         let data = &buf[..amt];
 
         println!("Received: {:?}", data);
-
-        
     } // the socket is closed here
     Ok(())
 }
