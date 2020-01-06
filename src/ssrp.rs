@@ -1,11 +1,13 @@
-/// Helper methods to build/parse SSRP packets.
+/// Helper methods to build/parse SSRP packets.  Actual networking stuff is elsewhere.
 use std::str;
 
-const NUL: u8 = 0;
-const CLNT_UCAST_INST: u8 = 4;
-const SVR_RESP: u8 = 5;
+const NUL: u8 = 0x00;
+const CLNT_UCAST_EX: u8 = 0x03;
+const CLNT_UCAST_INST: u8 = 0x04;
+const SVR_RESP: u8 = 0x05;
 
-/// creates a CLNT_UCAST_INST packet suitable for sending over the network.  
+/// creates a [`CLNT_UCAST_INST` message](https://docs.microsoft.com/en-us/openspecs/windows_protocols/mc-sqlr/c97b04b5-d80f-4d3e-9195-83bbfe246639)
+/// suitable for sending over the network.  
 /// This packet requests resolution/connection info for a specific named instance.
 pub fn get_instance_request(instance_name: &str) -> Vec<u8> {
     let mut buffer = Vec::new();
@@ -20,9 +22,10 @@ pub fn get_instance_request(instance_name: &str) -> Vec<u8> {
     buffer
 }
 
-/// This request can be sent to a server to get a set of all the instance details available on that server.
+/// This request can be sent to a server to get a set of all the instance
+/// details available on that server ([`CLNT_UCAST_EX` message](https://docs.microsoft.com/en-us/openspecs/windows_protocols/mc-sqlr/ee0e41b0-204f-4a95-b8bd-5783a7c72cb2)).
 pub const fn get_unicast_browse_request() -> [u8; 1] {
-    [2]
+    [CLNT_UCAST_EX]
 }
 
 pub fn parse_server_response<'a>(data: &'a [u8]) -> ServerResponse<'a> {
@@ -37,6 +40,8 @@ pub fn parse_server_response<'a>(data: &'a [u8]) -> ServerResponse<'a> {
     ServerResponse { data }
 }
 
+/// This struct represents the results of a call to the SQL Browser
+/// Service (ie a [`SVR_RESP` SSRP](https://docs.microsoft.com/en-us/openspecs/windows_protocols/mc-sqlr/2e1560c9-5097-4023-9f5e-72b9ff1ec3b1) message).
 pub struct ServerResponse<'a> {
     pub data: &'a str,
 }

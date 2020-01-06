@@ -16,7 +16,7 @@ fn main() -> std::io::Result<()> {
 
         // Receives a single datagram message on the socket. If `buf` is too small to hold
         // the message, it will be cut off.
-        let mut buf = [0; 65535];
+        let mut buf = [0; 65_535];
         let amt = socket.recv(&mut buf)?;
         let data = &buf[..amt];
 

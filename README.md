@@ -12,7 +12,7 @@ This library aims to provide a rust implementation for this protocol, which coul
 - [x] Send unicast request for single named instance
 - [x] Basic parsing of SVR_RESP packet
 - [ ] Split SVR_RESP into known key/value pairs
-- [ ] Unicast request for any instances on the machine
+- [x] Unicast request for any instances on the machine
 - [ ] Handle multiple instances of data in a single response
 - [ ] Add support for broadcast request
 - [ ] Ensure responses split into multiple datagrams parse correctly
